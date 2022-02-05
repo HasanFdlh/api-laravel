@@ -73,7 +73,13 @@ class ProductApiController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = Product::find($id);
+        // return response()->json($product);
+        return response()->json([
+            'succes' => true,
+            'msg' => 'success',
+            'data' => $product
+        ]);
     }
 
     /**
@@ -83,9 +89,18 @@ class ProductApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Product $product)
     {
-        //
+
+        $input = $request->all();
+        $product->nm_product = $input['nm_product'];
+        $product->price = $input['price'];
+        $product->stok = $input['stok'];
+        $product->save();
+
+        return response()->json([
+            $product
+        ]);
     }
 
     /**
@@ -96,6 +111,6 @@ class ProductApiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Product::find($id)->delete();
     }
 }
